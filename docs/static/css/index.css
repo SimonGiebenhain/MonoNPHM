@@ -353,3 +353,7 @@ body {
   width: 2000%;
   max-width: none !important;
 }
+
+#results-container {
+    max-width: 800px;
+}
