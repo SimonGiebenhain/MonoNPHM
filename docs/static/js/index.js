@@ -70,7 +70,7 @@ $(document).ready(function() {
 
     let options_mesh = {
 			slidesToScroll: 1,
-			slidesToShow: 2,
+			slidesToShow: 3,
 			loop: false,
 			infinite: false,
             pagination: false,
