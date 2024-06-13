@@ -84,7 +84,7 @@ Note that using the `.config` folder can be great advantage when working with di
 
 Our tracking alogorithm relies on FLAME tracking as initiliazation. Therefore, you will need an account for the [FLAME website](https://flame.is.tue.mpg.de/).
 
-To clone the necessary repositories and perform minor code adjustments, run
+To clone the necessary repositories for preprocessing and perform minor code adjustments thereof, run
 ```
 bash install_preprocessing_pipeline.sh
 ```
@@ -99,17 +99,21 @@ Then place them in `src/mononphm/preprocessing/MODNet/pretrained`.
 
 ### Demo Data
 
+You can download the demo data from [here](https://drive.google.com/drive/folders/1XHHabTt_IgYPmGZj0Gj1dyTm7dwyGEvb?usp=sharing) and move the conentens into the folder specified by `MONONPHM_DATA_TRACKING`. We provide 6 examples from the [FFHQ dataset](https://github.com/NVlabs/ffhq-dataset) alongside the preprocessing results.
+
 ### NPHM dataset
+
+Additionally, we provide an extension to the [NPHM Dataset](https://simongiebenhain.github.io/NPHM/), which now contains 488 people. To download the data, you will need to fill out the [Terms of Service](https://docs.google.com/forms/d/e/1FAIpQLScG9BhoHelqV6GnT-z9P2TsGTJ2x_FPHxdnne_RmlRkbYPPQQ/viewform).
 
 ### Model Checkpoints
 
+We provide pretrained models [here](https://drive.google.com/drive/folders/1shwQnL-TBI4vTsKVLOqyQ7B9rQcW9ozW?usp=sharing). Place the contents (both pretrained models) into `MONONPHM_EXPERIMENT_DIR`. 
+
+
 ### MonoNPHM Test Data
 
+Our test data from the MonoNPHM paper can be downloaded, after agreeing to the Terms of Service [here](https://forms.gle/1EsV5Ezs68N1LYv66).
 
-### Download Pretrained Model, Assets and Example Data
-
-You can find all necessary data here: `https://drive.google.com/drive/folders/1yZdQkkKwBJLeMIsCSAy7MeAkfJjZVD_H?usp=sharing`
-Please don't carelessly share the model checkpoint, since the latent codes from the dataset can reconstruct the faces up to a high level of detail. 
 
 ## 3. Usage
 
@@ -118,11 +122,10 @@ Please don't carelessly share the model checkpoint, since the latent codes from 
 You can run single-image head reconstruction on a few FFHQ examples using
 
 ```
-python scripts/inference/rec.py --model_type nphm --exp_name mononphm_release --ckpt 2500 --seq_name FFHQ_ID --no-intrinsics_provided --downsample_factor 0.33
+python scripts/inference/rec.py --model_type nphm --exp_name pretrained_mononphm --ckpt 2500 --seq_name FFHQ_ID --no-intrinsics_provided --downsample_factor 0.33
 ```
- where `FFHQ_ID` can be one of `TODO selected FFHQ IDs`.  
- Note that you will first need to download the demo dataset, as instructed above.  
- You will find the results in `TODO: env_paths.TRACKING_OUTPUT/stage1/FFHQ_ID`.
+ where `FFHQ_ID` can be one of the folder names of the provided demo data.  
+ You will find the results in `MONONPHM_TRACKING_OUTPUT/stage1/FFHQ_ID`.
 
 
 ### 3.2 Running the Preprocessing
@@ -134,7 +137,7 @@ To this end you can run
 cd scripts/preprocessing
 bash run.sh 510_seq_4 --intrinsics_provided
 ```
-which will run all neccessary steps for the sequence named `510_seq_4` located in `env_paths.DATA_TRACKING`. 
+which will run all neccessary steps for the sequence named `510_seq_4` located in `MONONPHM_DATA_TRACKING`. 
 The `intrinsics_provided` flag reads the `camera_intrinsics.txt` from the `env_paths.ASSETS` folder and provides the metrical tracker with it.
 
 ### 3.3 Tracking
@@ -142,11 +145,12 @@ The `intrinsics_provided` flag reads the `camera_intrinsics.txt` from the `env_p
 For MonoNPHM tracking, run
 
 ```
-python scripts/inference/rec.py --model_type nphm --exp_name mononphm_release --ckpt 2500 --seq_name 510_seq_4 --intrinsics_provided --is_video --downsample_factor=0.66
-python scripts/inference/rec.py --model_type nphm --exp_name mononphm_release --ckpt 2500 --seq_name 510_seq_4 --intrinsics_provided --is_video --downsample_factor=0.66 --is_stage2
+python scripts/inference/rec.py --model_type nphm --exp_name pretrained_mononphm --ckpt 2500 --seq_name 510_seq_4 --intrinsics_provided --is_video
+python scripts/inference/rec.py --model_type nphm --exp_name pretrained_mononphm --ckpt 2500 --seq_name 510_seq_4 --intrinsics_provided --is_video --is_stage2
 ```
 
-for the stage 1 and stage 2 of our proposed optimization. Note that stage2 optimization is only needed for videos.
+for the stage 1 and stage 2 of our proposed optimization. (Note that stage2 optimization is only needed for videos.)  
+The results can be found in `MONONPHM_TRACKING_OUTPUT/stage1/510_seq_4`.
 
 
 ### 3.4 Training
@@ -157,8 +161,16 @@ To train a model yourself, you will first need to generate the necessary trainin
 python scripts/data_processing/compute_fields_new.py --starti START_PID --endi END_PID
 python scripts/data_processing/compute_deformation_field.py
 ```
-will create the necessray data. Note that especially `compute_fields_new.py` can take a long time and consumes a lot of storage. (It is possible to reduce the hard-coded number of training samples per scan in `TODO`).  
+will create the necessray data. Note that especially `compute_fields_new.py` can take a long time and consumes a lot of storage. (It is possible to reduce the hard-coded number of training samples per scan in `scripts/data_processing/compute_fields_new.py`).  
 `START_PID` and `END_PID` specify the range of participant IDs for which the training data will be computed (exlcufing `END_PID`).
+
+To start the training itself, run
+```
+python scripts/training/launch_training.py --model_type nphm --cfg_file scripts/configs/mononphm.yaml --exp_name  MODEL_NAME --color_branch
+```
+
+If you are training on a headless machine, prepending `PYOPENGL_PLATFORM=osmesa` might be necessary.
+For our experiments we used 4 GPUs. By detault the training script will use all available GPUs on your machine, and the `batch_size` parameter in the configs refers to the per-GPU batch size.
 
 
 
