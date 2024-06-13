@@ -1,0 +1,20 @@
+opt:
+    lambda_rgb: 100.
+    lambda_mask: 10.0
+    lambdas_reg:
+        symm_dist_geo: 1.0
+        symm_dist_app: 1.0
+        reg_loc_geo: 500
+        reg_loc_app: 500
+        reg_global_geo: 50
+        reg_global_app: 50
+    lambda_reg_expr: 100
+    n_epochs: 251
+    rays_per_batch: 450
+ray_tracer:
+    object_bounding_sphere: 0.7
+    n_steps: 32
+reconstruction:
+    min: [ -0.55, -0.5, -0.95 ]
+    max: [ 0.55, 0.75, 0.4 ]
+    res: 200  # small for faster reconstruction # use 256 or higher to grasp reconstructed geometry better

@@ -1,0 +1,75 @@
+decoder:
+  decoder_nloc: 65 #48 #39
+  ex:
+    hidden_dim: 400 #512
+    lat_dim_ex: 100 #200
+    lat_dim_id: 16 #32
+    mode: compress
+    nhyper: 2
+    nlayers: 6
+  id:
+    gnn:
+      hidden_dim_app: 200
+      hidden_dim_geo: 200
+      nfreq_bands_app: 0
+      nfreq_bands_geo: 0
+      nlayers_app: 4
+      nlayers_geo: 4
+    head:
+      hidden_dim_app: 128
+      hidden_dim_geo: 128
+      lat_dim_app_aggr: 256
+      lat_dim_geo_aggr: 256
+      nlayers_app: 2
+      nlayers_geo: 2
+    lat_dim_glob: 64
+    lat_dim_glob_app: 64
+    lat_dim_loc_app: 32 #32
+    lat_dim_loc_geo: 32 #32
+    nloc: 65 #48 #39
+    nneigh: 12 #8
+    nsymm_pairs: 30 #22 #16
+    blend_std: 3.75
+training:
+  batch_size: 16
+  ckpt_interval: 250 #500 #250 #1000 #250
+  grad_clip: 1.0
+  grad_clip_lat: 1.0
+  lambdas:
+    anchors: 7.5
+    color: 1.0
+    corresp: 1000.0
+    eikonal: 0.15
+    hyper: 0.05
+    loss_neutral_zero: 0.001
+    loss_reg_zero: 0.0025 #0.001
+    lpips: 0.1
+    middle_dist: 0.0
+    middle_dist_app: 0
+    normals: 0.3
+    reg_app: 0.005 #0.01
+    reg_expr: 0.05
+    reg_shape: 0.01
+    reg_app_var: 0.0000003
+    reg_expr_var: 0.00000003
+    reg_shape_var: 0.00000003
+    space_sdf: 0.01
+    surf_sdf: 1.0
+    symm_dist: 0.01
+    symm_dist_app: 0.0001 #0.005
+  loss_type: igr
+  lr: 0.0005
+  lr_decay_factor: 0.5
+  lr_decay_factor_lat: 0.5
+  lr_decay_interval: 500 #2500 #500 #250
+  lr_decay_interval_lat: 500 #2500 #500 #250
+  lr_lat: 0.002
+  lr_lat_expr: 0.01
+  mode: shape_space
+  npatches_per_batch: 1
+  npoints_corresp: 250
+  npoints_face: 1000
+  npoints_non_face: 250
+  npoints_off_surface: 250
+  sigma_near: 0.01
+  weight_decay: 0.0005

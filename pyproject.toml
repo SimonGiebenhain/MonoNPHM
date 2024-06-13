@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mononphm"
+version = "0.0.1"
+description = "<<<ENTER_DESCRIPTION>>"
+authors = [
+    { name = "Simon Giebenhain", email = "simon.giebenhain@tum.de" },
+]
+readme = "README.md"
+license = { text = "Apache 2.0" }
+requires-python = ">=3.7.0"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent"
+]
+urls = { Documentation = "<<<ENTER_LINK_TO_DOCUMENTATION>>>" }
+# Main dependencies
+dependencies = [
+]
+
+[project.optional-dependencies]
+# Development packages, install via <<<PROJECT_NAME>>>[dev]
+dev = [
+]
+
+[project.scripts]
+# E.g., ns-download-data = "scripts.downloads.download_data:entrypoint"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["MonoNPHM*"]  # Keep the '*', otherwise submodules are not found
