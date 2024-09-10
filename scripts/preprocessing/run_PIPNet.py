@@ -66,7 +66,11 @@ def main_kinect(seq_name : str):
 
         images = []
         for file in files:
-            image = np.array(Image.open(f'{folder}/{file}'))
+            # Reference:
+            # https://stackoverflow.com/a/58497441/3405291
+            # Fix:
+            # RuntimeError: The size of tensor a (4) must match the size of tensor b (3) at non-singleton dimension 0
+            image = np.array(Image.open(f'{folder}/{file}').convert('RGB'))
             images.append(image)
 
         image_height, image_width, _ = images[0].shape
