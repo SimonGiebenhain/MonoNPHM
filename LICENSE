@@ -1,6 +1,6 @@
 MIT License
 
-This License only concerns the code provided in this repository.
+This License only concerns the code provided in this repository, but not the associated data or pretrained models.
 It DOES NOT concern the NPHM dataset, which is distributed with a separate, much stricted license.
 
 Copyright (c) 2024 Simon Giebenhain, Tobias Kirschstein,  Markos Georgopoulos, Martin Rünz, Lourdes Agaptio and Matthias Nießner
