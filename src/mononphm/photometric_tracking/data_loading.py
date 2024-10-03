@@ -81,7 +81,13 @@ def prepare_data(timestep=None,
     c2w_ex[:3, 3] *= 4
 
     try:
-        rgb = Image.open(f'{env_paths.DATA_TRACKING}/{seq_name}/source/{timestep:05d}.png') #TODO
+        # Ref:
+        # https://discuss.pytorch.org/t/grayscale-to-rgb-transform/18315/2
+        # Fix:
+        # RuntimeError: shape '[-1, 3]' is invalid for input of size 592900
+        # At statement:
+        # rgb = torch.from_numpy(rgb).reshape(-1, 3)
+        rgb = Image.open(f'{env_paths.DATA_TRACKING}/{seq_name}/source/{timestep:05d}.png').convert('RGB') #TODO
         facer_mask = Image.open(f'{env_paths.DATA_TRACKING}/{seq_name}/seg/{timestep}.png')
     except Exception as fehler:
         rgb = Image.open(f'{env_paths.KINECT_DATA}/{seq_name}/color/{timestep:05d}.png')
