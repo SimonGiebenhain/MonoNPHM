@@ -1220,12 +1220,12 @@ class Tracker:
                 mesh.export(self.exp_dir + 'mesh.ply'.format(self.subject, actual_expression))
             torch.cuda.empty_cache()
 
-        if progress_interval > 0:
-            for e, expression in enumerate(self.expressions):
-                for i in range(min(1, self.num_views)):  # num_views):
-                    if len(self.progress_images[e][i]) > 0:
-                        mediapy.write_video(self.exp_dir + f'progress_video.mp4',
-                                            self.progress_images[e][i], fps=1)
+        #if progress_interval > 0:
+        #    for e, expression in enumerate(self.expressions):
+        #        for i in range(min(1, self.num_views)):  # num_views):
+        #            if len(self.progress_images[e][i]) > 0:
+        #                mediapy.write_video(self.exp_dir + f'progress_video.mp4',
+        #                                    self.progress_images[e][i], fps=1)
 
         # save reconstructed latent codes:
         np.save(f'{self.exp_dir}/z_geo.npy', self.latent_code['geo'].detach().cpu().numpy())
@@ -1395,7 +1395,7 @@ def track(net, cfg, subject, expressions, out_dir, out_dir_stage1=None,  fix_id=
 
 
         # render current revconstruction state for debugging purposes
-        if progress_interval > 0 and epoch % int(progress_interval*epoch_mult) == 0 and epoch > 0:
+        if progress_interval > 0 and epoch % int(progress_interval*epoch_mult) == 0 and epoch > 0 or (epoch == n_epochs-1):
             tracker.render_progress(data_manager, variance, epoch)
 
         epoch += 1
