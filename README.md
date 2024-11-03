@@ -107,7 +107,7 @@ Additionally, we provide an extension to the [NPHM Dataset](https://simongiebenh
 
 ### Model Checkpoints
 
-We provide pretrained models [here](https://drive.google.com/drive/folders/1shwQnL-TBI4vTsKVLOqyQ7B9rQcW9ozW?usp=sharing). Place the contents (both pretrained models) into `MONONPHM_EXPERIMENT_DIR`. 
+We provide pretrained models [here](https://drive.google.com/drive/folders/1shwQnL-TBI4vTsKVLOqyQ7B9rQcW9ozW?usp=sharing). Place the contents into `MONONPHM_EXPERIMENT_DIR`. 
 
 
 ### MonoNPHM Test Data
@@ -122,7 +122,7 @@ Our test data from the MonoNPHM paper can be downloaded, after agreeing to the T
 You can run single-image head reconstruction on a few FFHQ examples using
 
 ```
-python scripts/inference/rec.py --model_type nphm --exp_name pretrained_mononphm --ckpt 2500 --seq_name FFHQ_ID --no-intrinsics_provided --downsample_factor 0.33
+python scripts/inference/rec.py --model_type nphm --exp_name pretrained_mononphm --ckpt 2500 --seq_name FFHQ_ID --no-intrinsics_provided --downsample_factor 0.33 --no-is_video
 ```
  where `FFHQ_ID` can be one of the folder names of the provided demo data.  
  You will find the results in `MONONPHM_TRACKING_OUTPUT/stage1/FFHQ_ID`.
@@ -130,7 +130,7 @@ python scripts/inference/rec.py --model_type nphm --exp_name pretrained_mononphm
 
 ### 3.2 Running the Preprocessing
 
-Before running MonoNPHM tracking on the test data (or other images/videos), you will need to run the preprocessing pipeline, including landmark detection, facial segmentation, background matting, and FLAME tracking to initialize the head pose.
+When working with your own data, you will need to run the preprocessing pipeline, including landmark detection, facial segmentation, background matting, and FLAME tracking to initialize the head pose.
 To this end you can run
 
 ```
@@ -145,12 +145,12 @@ The `intrinsics_provided` flag reads the `camera_intrinsics.txt` from the `env_p
 For MonoNPHM tracking, run
 
 ```
-python scripts/inference/rec.py --model_type nphm --exp_name pretrained_mononphm --ckpt 2500 --seq_name 510_seq_4 --intrinsics_provided --is_video
-python scripts/inference/rec.py --model_type nphm --exp_name pretrained_mononphm --ckpt 2500 --seq_name 510_seq_4 --intrinsics_provided --is_video --is_stage2
+python scripts/inference/rec.py --model_type nphm --exp_name pretrained_mononphm_original --ckpt 2500 --seq_name 510_seq_4 --intrinsics_provided --is_video
+python scripts/inference/rec.py --model_type nphm --exp_name pretrained_mononphm_original --ckpt 2500 --seq_name 510_seq_4 --intrinsics_provided --is_video --is_stage2
 ```
 
 for the stage 1 and stage 2 of our proposed optimization. (Note that stage2 optimization is only needed for videos.)  
-The results can be found in `MONONPHM_TRACKING_OUTPUT/stage1/510_seq_4`.
+The results can be found in `MONONPHM_TRACKING_OUTPUT/EXP_NAME/stage1/510_seq_4`.
 
 
 ### 3.4 Training
