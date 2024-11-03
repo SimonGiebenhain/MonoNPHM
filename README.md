@@ -152,6 +152,18 @@ python scripts/inference/rec.py --model_type nphm --exp_name pretrained_mononphm
 for the stage 1 and stage 2 of our proposed optimization. (Note that stage2 optimization is only needed for videos.)  
 The results can be found in `MONONPHM_TRACKING_OUTPUT/EXP_NAME/stage1/510_seq_4`.
 
+### 3.5 Evaluation
+
+After having tracked the kinect videos, you can run the evaluation scrip using
+
+```
+python scripts/evaluation/eval.py --model_name pretrained_mononphm_original
+```
+
+There is an `--is_debug` flage that can be used to visualize the individual steps which are necessary to perform, before computing Chamfer-style metrics.
+The average the results across all sequences, you can use the `scripts/evaluation/gather_metrics.py`
+
+
 
 ### 3.4 Training
 
